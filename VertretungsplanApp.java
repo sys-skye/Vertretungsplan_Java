@@ -14,7 +14,7 @@ import java.util.*;
 
 public class VertretungsplanApp extends Application {
 
-    private static final String PROFILE_FILE = "profile.properties";
+    private static final Path PROFILE_PATH = resolveProfilePath();
     private static final String PLAN_RESOURCE_URL = "https://bonniweb.de/mod/resource/view.php?id=1323";
     private static final String TIMETABLE_PDF_URL = "https://bonniweb.de/pluginfile.php/2990/mod_resource/content/4/Stufe_Q2.pdf";
 
@@ -31,6 +31,21 @@ public class VertretungsplanApp extends Application {
     private final TextArea tomorrowArea = new TextArea();
 
     private final Properties props = new Properties();
+
+    private static Path resolveProfilePath() {
+        String appData = System.getenv("APPDATA");
+        if (appData == null || appData.isBlank()) {
+            return Path.of("profile.properties");
+        }
+        return Path.of(appData, "Vertretungsplan", "profile.properties");
+    }
+
+    private static void ensureProfileDir() {
+        try {
+            Path dir = PROFILE_PATH.getParent();
+            if (dir != null) Files.createDirectories(dir);
+        } catch (Exception ignored) {}
+    }
 
     @Override
     public void start(Stage stage) {
@@ -132,8 +147,8 @@ public class VertretungsplanApp extends Application {
 
     private void loadProfiles() {
         props.clear();
-        if (Files.exists(Path.of(PROFILE_FILE))) {
-            try (FileInputStream in = new FileInputStream(PROFILE_FILE)) {
+        if (Files.exists(PROFILE_PATH)) {
+            try (FileInputStream in = new FileInputStream(PROFILE_PATH.toFile())) {
                 props.load(in);
             } catch (Exception ignored) {}
         }
@@ -182,7 +197,8 @@ public class VertretungsplanApp extends Application {
         names.add(key);
         props.setProperty("profiles", String.join(",", names));
 
-        try (FileOutputStream out = new FileOutputStream(PROFILE_FILE)) {
+        ensureProfileDir();
+        try (FileOutputStream out = new FileOutputStream(PROFILE_PATH.toFile())) {
             props.store(out, "Vertretungsplan profile");
         } catch (Exception ignored) {}
 
@@ -213,7 +229,8 @@ public class VertretungsplanApp extends Application {
         names.remove(key);
         props.setProperty("profiles", String.join(",", names));
 
-        try (FileOutputStream out = new FileOutputStream(PROFILE_FILE)) {
+        ensureProfileDir();
+        try (FileOutputStream out = new FileOutputStream(PROFILE_PATH.toFile())) {
             props.store(out, "Vertretungsplan profile");
         } catch (Exception ignored) {}
 

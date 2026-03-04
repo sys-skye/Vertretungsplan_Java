@@ -1,24 +1,17 @@
-﻿import java.io.FileInputStream;
-import java.util.ArrayList;
+﻿import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 public class Vertretungsplan {
     private static final String PLAN_RESOURCE_URL = "https://bonniweb.de/mod/resource/view.php?id=1323";
     private static final String TIMETABLE_PDF_URL = "https://bonniweb.de/pluginfile.php/2990/mod_resource/content/4/Stufe_Q2.pdf";
 
     public static void main(String[] args) throws Exception {
-        Properties props = new Properties();
-        try { props.load(new FileInputStream("config.properties")); } catch (Exception ignored) {}
-
         String user = System.getenv("BONNIWEB_USER");
         String pass = System.getenv("BONNIWEB_PASS");
-        if (user == null) user = props.getProperty("username");
-        if (pass == null) pass = props.getProperty("password");
-
+        
         if (user == null || pass == null) {
             System.out.println("Keine Zugangsdaten gefunden.");
             return;
@@ -77,3 +70,9 @@ public class Vertretungsplan {
         }
     }
 }
+
+
+
+
+
+
