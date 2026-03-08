@@ -13,7 +13,6 @@ A Java application that fetches class substitutions and matches them with a stud
 
 > Just download from the [Release](https://github.com/sys-skye/Vertretungsplan_Java/releases/tag/1Release) page.
 
----
 
 ## Or Build It Yourself
 
