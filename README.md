@@ -27,17 +27,6 @@ A Java application that fetches class substitutions and matches them with a stud
 
 1. Clone or download the project.
 
-2. *(Optional)* Set your BonniWeb credentials as environment variables:
-```bash
-   set BONNIWEB_USER=your_username
-   set BONNIWEB_PASS=your_password
-```
-   Or edit `src/main/resources/config.properties`:
-```properties
-   username=your_username
-   password=your_password
-```
-
 ### Build
 ```bash
 mvn clean package
